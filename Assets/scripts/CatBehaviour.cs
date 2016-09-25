@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CatBehaviour : MonoBehaviour {
+ public abstract class CatBehaviour : MonoBehaviour {
 
-	const float catSpeed = 2.5f;
+	const float postPetSpeed = 2.5f;
 
 	// Use this for initialization
 	void Start ()
@@ -16,12 +16,12 @@ public class CatBehaviour : MonoBehaviour {
 	{
 		if (GetComponent<Pettable>().catPet)
 		{
-			transform.position -= new Vector3(catSpeed * Time.deltaTime, 0);
+			transform.position -= new Vector3(postPetSpeed * Time.deltaTime, 0);
 		}
 
 		else
 		{
-			transform.position += new Vector3(catSpeed * Time.deltaTime, 0);
+			UpdateMovementPattern();
 		}
 	}
 
@@ -37,4 +37,7 @@ public class CatBehaviour : MonoBehaviour {
 			}
 		}
 	}
+
+	public abstract void UpdateMovementPattern();
+
 }
