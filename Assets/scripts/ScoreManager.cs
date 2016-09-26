@@ -8,7 +8,6 @@ public class ScoreManager : MonoBehaviour
 	public void OnCatPetted(Pettable pettable)
 	{
 		score += pettable.scoreValue;
-		Debug.Log(score);
 	}
 
 	// Use this for initialization

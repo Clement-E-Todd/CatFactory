@@ -20,7 +20,6 @@ public class GrumpyManager : MonoBehaviour {
 	public void OnCatWasMissed()
 	{
 		grumpiness = Mathf.Min(grumpiness + grumpinessGained, 1f);
-		Debug.Log(grumpiness);
 
 		if (grumpiness >= 1)
 		{

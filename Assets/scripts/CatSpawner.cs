@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CatSpawner : MonoBehaviour {
 
@@ -22,20 +23,17 @@ public class CatSpawner : MonoBehaviour {
 
 	public float currentDifficulty = 0;
 
+	public GameObject[] catPrefabs;
+
 
 	void Start ()
 	{
 		SpawnCat();
 	}
 
-	void Update ()
-	{
-	
-	}
-
 	void SpawnCat()
 	{
-		GameObject prefabInstance = Resources.Load<GameObject>("prefabs/Cat");
+		GameObject prefabInstance = ChooseCatToSpawn();
 		GameObject newCat = Instantiate<GameObject>(prefabInstance);
 
 		float yDistance = Random.Range(minSpawnDistanceY, maxSpawnDistanceY);
@@ -59,4 +57,51 @@ public class CatSpawner : MonoBehaviour {
 		spawnPauseTime = Random.Range(minTime, maxTime);
 		return spawnPauseTime;
 	}
-}
+
+	private GameObject[] GetSpawnablePrefabs()
+	{
+		List<GameObject> spawnablePrefabs = new List<GameObject>();
+
+		foreach (GameObject gameObject in catPrefabs)
+		{
+			float difficultyRating = gameObject.GetComponent<CatBehaviour>().GetDifficultyRating();
+			if (difficultyRating <= currentDifficulty)
+			{
+				spawnablePrefabs.Add(gameObject);
+			} 
+		}
+
+		return spawnablePrefabs.ToArray();
+	}
+
+	private GameObject ChooseCatToSpawn()
+	{
+		GameObject[] spawnablePrefabs = GetSpawnablePrefabs();
+
+		float totalChanceToSpawn = 0f;
+
+		foreach (GameObject gameObject in spawnablePrefabs)
+		{
+			float chanceToSpawn = gameObject.GetComponent<CatBehaviour>().GetChanceToSpawn();
+			totalChanceToSpawn += chanceToSpawn;
+		}
+
+		float randomChoice = Random.Range(0f, totalChanceToSpawn);
+		float choiceHelper = 0f;
+
+		foreach (GameObject gameObject in spawnablePrefabs)
+		{
+			float chanceToSpawn = gameObject.GetComponent<CatBehaviour>().GetChanceToSpawn();
+			choiceHelper += chanceToSpawn;
+
+			if (randomChoice <= choiceHelper)
+			{
+				return gameObject;
+			}
+		}
+
+		return null;
+	}
+
+}	
+

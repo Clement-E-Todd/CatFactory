@@ -40,4 +40,8 @@ using System.Collections;
 
 	public abstract void UpdateMovementPattern();
 
+
+	public abstract float GetDifficultyRating();
+
+	public abstract float GetChanceToSpawn();
 }
